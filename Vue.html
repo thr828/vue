@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+		<link rel="stylesheet" href="css/demo.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<h1>--------------v-model----------------------</h1> {{msg}}
+			<input type="text" v-model="msg" />
+			<input type="text" v-model="computedmsg" />
+			<h1>--------------v-if----------------------</h1>
+			<p>age:{{age | num}}</p>
+			<p v-if="yes">{{yes}}</p>
+			<p v-if="no">{{no}}</p>
+			<p v-if="age>20">age:{{age}}</p>
+			<p v-if="name.indexOf('keep')>=0">name:{{name}}</p>
+
+			<h1>--------------v-show----------------------</h1>
+			<p v-show="yes">{{yes}}</p>
+			<p v-show="no">{{no}}</p>
+			<p v-show="age>20">age:{{age}}</p>
+			<p v-show="name.indexOf('keep')>=0">name:{{name}}</p>
+
+			<h1>--------------v-else----------------------</h1>
+			<p v-if="age>20">age:{{age}}</p>
+			<p v-else>年龄不符合要求</p>
+
+			<p v-show="age>20">age:{{age}}</p>
+			<!--<p v-else>年龄不符合要求</p> -->
+			<!--此处使用v-else有问题-->
+			<p v-show="!(age>20)" v-text="age"></p>
+			<!-- v-text可以解决闪烁问题-->
+
+			<h1>--------------v-for----------------------</h1>
+			<table border="1">
+				<tr v-for="p in people">
+					<td>{{p.name}}</td>
+					<td>{{p.age}}</td>
+					<td>{{p.sex}}</td>
+				</tr>
+			</table>
+			<h1>--------------v-bind----------------------</h1>
+			<ul class="pagination">
+				<li v-for="n in pageCount">
+					<a href="javascripit:void(0)" v-bind:class="activeNumber === n ? 'active' : ''">{{ n }}</a>
+				</li>
+			</ul>
+			<h1>--------------v-on----------------------</h1>
+			<button v-on:click="greet">Greet</button>
+			<button v-on:click="say('hi')">hi</button>
+			<h1>--------------v-bind,v-on缩写-----------</h1>
+			<button @click="greet">Greet</button>
+			<button @click="say('hi')">hi</button>
+
+			<ul class="pagination">
+				<li v-for="n in pageCount">
+					<a href="javascripit:void(0)" :class="activeNumber === n ? 'active' : ''">{{ n }}</a>
+				</li>
+			</ul>
+
+			<h1>--------------计算属性----------------------</h1>
+			<p >site：<input type="text" v-model="site" /></p>
+			
+			<p >url:<input type="text" v-model="url" /></p>
+			<p >urlname:<input type="text" v-model="urlname" /></p>
+		</div>
+
+	</body>
+
+</html>
+<script type="text/javascript">
+	var initData = {
+		msg: "Hello World！",
+		yes: true,
+		no: false,
+		age: 9,
+		name: 'keepfool',
+		activeNumber: 1,
+		pageCount: 10,
+		people: [{
+			name: 'Jack',
+			age: 30,
+			sex: 'Male'
+		}, {
+			name: 'Tery',
+			age: 26,
+			sex: 'Male'
+		}, {
+			name: 'Tracy',
+			age: 22,
+			sex: 'Female'
+		}, {
+			name: 'Chris',
+			age: 36,
+			sex: 'Male'
+		}],
+		url:'',
+		urlname:''
+
+	};
+	Vue.filter('num', function (value) {
+		return value>10?value:"0"+value;
+    });
+	new Vue({
+		el: "#app",
+		data: initData,
+		methods: {
+			greet: function() {
+				alert(this.msg);
+			},
+			say: function(message) {
+				alert(message);
+			}
+		},
+		filters:{//过滤器
+		/* 	num:function(value){
+				return value>10?value:"0"+value;
+			} */
+		},
+		watch:{//监听器
+             msg:function(newValue,oldValue)
+			 {
+				console.log('msg被修改了',newValue,oldValue);
+			 }
+
+		},
+		computed:{//计算属性
+			computedmsg:function()
+			{
+				return this.msg.split('').reverse().join('');
+			},
+			site:{
+               get:function(){
+					return this.urlname+' '+this.url;
+			   },
+			   set:function(value){
+				var names = value.split(' ')
+				this.urlname = names[0]
+				this.url = names[names.length - 1]
+			   }
+
+			}
+
+
+		}
+	});
+</script>

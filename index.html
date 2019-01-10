@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>vue动态时钟</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div id="clock">
+			<p class="date">{{date}}</p>
+			<p class="time">{{time}}</p>
+			<p class="text"></p>
+		</div>
+
+	</body>
+</html>
+<script type="text/javascript">
+	var clock=new Vue({
+		el:"#clock",
+		data:{
+			date:"",
+			time:""			
+		}		
+	});
+	
+	updateTime();
+	//定时器
+	var index=0;
+	function updateTime(){
+		index++;
+		var nowDate=new Date();
+		var week=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
+		clock.date=new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate()+""+week[new Date().getDay()];
+		clock.time=new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+	};
+	setInterval(updateTime,1000);
+	
+	
+</script>
