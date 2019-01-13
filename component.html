@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <div id='app'>
         {{message}}
@@ -14,9 +16,31 @@
         {{reversemsg}}
         <my-header></my-header>
         <input v-model='age'>
-        <p >{{age|num}}</p>
+        <p>{{age|num}}</p>
+        <template id="temp">
+            <div>
+                <h2>{{page}}</h2>
+                <ul>
+                    <li>
+                        第一项
+                    </li>
+                </ul>
+            </div>
+        </template>
+        <!-- <script type="text/x-template" id="temp">
+            <div>
+                <h2>{{page}}</h2>
+                <ul>
+                    <li>
+                        第一项
+                    </li>
+                </ul>
+            </div>
+        </script> -->
+        <!-- <my-page></my-page> -->
     </div>
 </body>
+
 </html>
 <script>
     //全局组件
@@ -27,29 +51,43 @@
     // Vue.filter('num',function(value){
     //       return value>10?value:'0'+value;
     // });
-    var ve=new Vue({
-        el:'#app',
-        data:{
-            message:'hello world',
-            age:8
+    var ve = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello world',
+            age: 8
         },
         //计算属性
-        computed:{
-            reversemsg:function(){
+        computed: {
+            reversemsg: function () {
                 return this.message.split('').reverse().join('');
             }
         },
-        components:{
-            'my-header':{
+        components: {
+            'my-header': {
                 template: "<h1>局部组件</h1>"
+            },
+            // 'my-page': {
+            //     template: '<div><h2>{{page}}</h2><ul><li>第一项</li></ul></div>',
+            //     data: function () {
+            //         return {
+            //             page: '组件内数据'
+            //         };
+            //     }
+            // }
+            'my-page':{
+                template:'#temp',
+                data: function () {
+                    return {
+                        page: '组件内数据'
+                    };
+                }
             }
         },
-        filters:{
-            'num':function(value)
-            {
-                return value>10?value:'0'+value;
+        filters: {
+            'num': function (value) {
+                return value > 10 ? value : '0' + value;
             }
         }
     });
 </script>
-
